@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MysteryNation Word Game</title>
+    <style>
+        body {
+            background-image: url('untitled folder/kids.jpg'); /* Ensure the correct path */
+            background-size: cover; /* Ensures the full image is displayed */
+            background-repeat: no-repeat; /* Prevents tiling */
+            background-position: center; /* Centers the image */
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Aligns button at bottom */
+            align-items: center;
+            padding-bottom: 20px; /* Adds some spacing from the bottom */
+        }
+
+        .team-info {
+            background-color: rgb(224, 231, 255); /* Light yellow background */
+            padding: 10px 20px; /* Padding for the div */
+            border-radius: 5px; /* Rounded corners */
+            margin-bottom: 10px; /* Space between the div and the button */
+            font-size: 40px; /* Font size for the text */
+            font-family: Georgia, 'Times New Roman';
+            text-align: center; /* Center the text */
+        }
+
+        .start-btn {
+            font-size: 50px;
+            font-weight: bold; /* Makes the text bolder */
+            padding: 20px 40px;
+            background-color: yellow;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .start-btn:hover {
+            background-color: beige;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="team-info">By Team 1(Harshika and Muhammad Olaniyan)</div> <!-- Light yellow div -->
+
+    <button class="start-btn" onclick="window.location.href='http://127.0.0.1:5500/instructions.html'">Start</button>
+
+</body>
+</html>

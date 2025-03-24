@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Instructions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-image: url('untitled folder/background.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .instruction {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            background-color: lightblue;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            max-width: 600px; /* Optional: limit the width of the paragraph */
+        }
+
+        .name-inputs {
+            margin-bottom: 20px;
+            background-color: lightyellow; /* Light yellow background */
+            color: black; /* Black text */
+            padding: 20px; /* Add some padding */
+            border-radius: 5px; /* Rounded corners */
+            display: flex;
+            flex-direction: column; /* Stack labels and inputs vertically */
+            align-items: center; /* Center align the inputs */
+        }
+
+        .name-inputs label {
+            margin-bottom: 5px; /* Space between label and input */
+            font-weight: bold; /* Make the label bold */
+        }
+
+        .name-inputs input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px; /* Set a fixed width for the input fields */
+        }
+
+        .submit-button {
+            padding: 10px 20px;
+            font-size: 20px; /* Increased font size */
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: greenyellow; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="instruction">
+            <h1>GAME INSTRUCTIONS</h1>
+        </div>
+        <div class="info">
+            <p>1. The game is played in turns: two human players and one A.I. Player.</p>
+
+            <p>2. There are 3 rounds in total. Each round will show a country's flag, and
+            
+            you need to complete the country's name by filling in the blanks.</p>
+            
+            <p>3. Scoring: Players earn 1 point for each correct answer. The player with
+            
+            the highest score at the end wins.</p>
+            
+            <p>4. You must fill in all blanks to submit your answer.</p>
+            
+            <p>5. You can hover over the country's flag to reveal a hint with the continent
+            
+            and a fun fact about the country.</p>
+            
+            <p>6. Player 1 and Player 2 must fill in all blanks before submitting their
+            
+            answer.</p>
+            
+            <p>7. You can also scan your QR code for your answer's country and move
+            
+            ahead.</p>
+            
+            <p>8. After filling in all blanks, click the Submit button to submit your answer
+            
+            or press enter key.</p>
+            
+            <p>9. The computer will try to guess the country's name based on its stored
+            
+            answer.</p>
+            
+            <p>10. At the end, you will see the final scores for Player 1, Player 2, and the A.I. Player.</p>
+            
+              
+        </div>
+        <div class="name-inputs">
+            <label for="player1">Player 1</label>
+            <input type="text" id="player1" placeholder="Enter name for Player 1" required />
+            <label for="player2">Player 2</label>
+            <input type="text" id="player2" placeholder="Enter name for Player 2" required />
+        </div>
+        <button type="submit" class="submit-button" onclick="handleSubmit(event)">Submit and PLAY!</button>
+    </div>
+
+    <script>
+    function handleSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission
+    const player1 = document.getElementById('player1').value;
+    const player2 = document.getElementById('player2').value;
+
+    // Store player names in local storage
+    localStorage.setItem('player1', player1);
+    localStorage.setItem('player2', player2);
+
+    // Redirect to the new page
+    window.location.href = 'http://127.0.0.1:5500/index.html'; // Change this to the name of your new HTML file
+}
+    </script>
+</body>
+</html>
