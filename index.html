@@ -34,6 +34,40 @@ background: rgba(0, 0, 0, 0.7);
 display: inline-block;
 border-radius: 10px;
 }
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center align the buttons */
+    margin-top: 20px; /* Space above the buttons */
+}
+
+.action-button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 15px 30px; /* Padding for the button */
+    text-align: center; /* Center text */
+    text-decoration: none; /* No underline */
+    display: inline-block; /* Inline block for button */
+    font-size: 20px; /* Font size */
+    margin: 10px 0; /* Space between buttons */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for background color and box-shadow */
+}
+
+.action-button:hover {
+    background-color: #4CAF50; /* Keep the original hover color */
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 255, 0, 0.6), 0 0 40px rgba(255, 255, 0, 0.4);
+    transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the glow effect */
+}
+
+.glow {
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 255, 0, 0.6), 0 0 40px rgba(255, 255, 0, 0.4);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
 .word-box { font-size: 36px; margin: 20px; }
 input {
 width: 50px;
@@ -55,6 +89,8 @@ border: none;
 background-color: #ff00dd;
 color: white;
 }
+
+
 #flag {
 width: 300px;
 height: 180px;
@@ -108,15 +144,23 @@ text-align: center;
 
 
 
-<div class="game-container">
-<img id="flag" src="" alt="Country Flag">
-<div id="word-display" class="word-box"></div>
-<p id="turn-info"></p>
-<p id="message"></p>
-<p id="score">Player 1: 0 | Player 2: 0 | Computer: 0</p>
-<button id="submit-btn" onclick="checkAnswer()">Submit</button>
-<div id="country-info"></div>
-</div>
+    <div class="game-container">
+        <img id="flag" src="" alt="Country Flag">
+        <div id="word-display" class="word-box"></div>
+        <p id="turn-info"></p>
+        <p id="message"></p>
+        <p id="score">Player 1: 0 | Player 2: 0 | Computer: 0</p>
+        <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+        <div id="country-info"></div>
+        
+        <!-- New Buttons -->
+        <div class="button-container">
+            <button class="action-button" onclick="window.location.href='http://127.0.0.1:5500/gamestart.html'">Quit</button>
+            <button class="action-button" onclick="window.location.href='http://127.0.0.1:5500/instructions.html'">Instructions</button>
+        </div>
+    
+    
+
 
 <script>
 // Retrieve player names from local storage
@@ -230,15 +274,21 @@ document.addEventListener("keydown", function(event) {
         });
 
 
-function startRound() {
-if (currentRound >= maxRounds) {
-document.getElementById("turn-info").innerText = "Game Over! Final Scores.";
-document.getElementById("submit-btn").disabled = true;
-return;
+    function startRound() {
+    // Update the scoreboard with player names at the start of each round
+    const player1Name = localStorage.getItem('player1') || "Player 1";
+    const player2Name = localStorage.getItem('player2') || "Player 2";
+    document.getElementById("score").innerText = `${player1Name}: ${scores[0]} | ${player2Name}: ${scores[1]} | Computer: ${scores[2]}`;
+
+    if (currentRound >= maxRounds) {
+        document.getElementById("turn-info").innerText = "Game Over! Final Scores.";
+        document.getElementById("submit-btn").disabled = true;
+        return;
+    }
+    document.getElementById("message").innerText = "";
+    displayWord();
 }
-document.getElementById("message").innerText = "";
-displayWord();
-}
+
 
 
 
@@ -305,6 +355,11 @@ function handleInput(event) {
 }
 
 function checkAnswer() {
+    // Add glow effect
+    const submitButton = document.getElementById("submit-btn");
+    submitButton.classList.add("glow");
+
+    // Your existing code for checking the answer
     let inputs = document.querySelectorAll("input");
     let userAnswer = words[currentRound];
     let inputValues = Array.from(inputs).map(input => input.value.toUpperCase());
@@ -336,22 +391,28 @@ function checkAnswer() {
     }
     updateScore();
     setTimeout(nextRound, 2000);
+
+    // Remove glow effect after a short delay
+    setTimeout(() => {
+        submitButton.classList.remove("glow");
+    }, 300); // Adjust the duration as needed
 }
-
-
 
 
 function computerMove() {
-document.getElementById("message").innerText = `Computer guessed: ${answers[currentRound]}`;
-setTimeout(() => {
-scores[2]++;
-updateScore();
-nextRound();
-}, 2000);
+    document.getElementById("message").innerText = `Computer guessed: ${answers[currentRound]}`;
+    setTimeout(() => {
+        scores[2]++;
+        updateScore();
+        nextRound();
+    }, 3500);
 }
 
+
 function updateScore() {
-document.getElementById("score").innerText = `Player 1: ${scores[0]} | Player 2: ${scores[1]} | Computer: ${scores[2]}`;
+    const player1Name = localStorage.getItem('player1') || "Player 1";
+    const player2Name = localStorage.getItem('player2') || "Player 2";
+    document.getElementById("score").innerText = `${player1Name}: ${scores[0]} | ${player2Name}: ${scores[1]} | Computer: ${scores[2]}`;
 }
 
 function nextRound() {
