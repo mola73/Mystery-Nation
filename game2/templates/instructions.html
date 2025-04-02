@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" id=" instruct_whole">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Instructions</title>
+  </head>
+  <body id="instruct_body">
+    <audio id="click" src="{% static 'audio/mousclick.mp3' %}"></audio>
+    <audio id="congrats" src="{% static 'audio/congrats.mp3' %}"></audio>
+    <audio id="bell" src="{% static 'audio/bell.mp3' %}"></audio>
+    <script>
+      // function handleQuit() {
+      //   // Redirect to a quit or home page, or close the game window if desired
+      //   window.location.href = "/start/"; // Redirecting to home page or another destination
+      // }
+      function playAudio(audio) {
+        if (audio) {
+          audio.currentTime = 0; // Reset audio to start if played before
+          audio
+            .play()
+            .catch((error) => console.log("Audio playback error:", error));
+        }
+      }
+      function onWin() {
+        playAudio(document.getElementById("congrats"));
+      }
+      function ringBell() {
+        playAudio(document.getElementById("bell"));
+      }
+      function clickButton() {
+        playAudio(document.getElementById("click"));
+      }
+      function quitit() {
+        ringBell();
+        setTimeout(() => {
+          // Redirect to the new page
+          handleQuit(); // Change this to the name of your new HTML file
+        }, 100); // Wait 500ms before redirecting (adjust as needed)
+      }
+      function submit() {
+        handleSubmit(event);
+        clickButton();
+        setTimeout(() => {
+          // Redirect to the new page
+          window.location.href = "/game2/"; // Change this to the name of your new HTML file
+        }, 1000); // Wait 500ms before redirecting (adjust as needed)
+      }
+    </script>
+    <div class="container">
+      <div class="instruction">
+        <h1>GAME INSTRUCTIONS</h1>
+      </div>
+      <div class="info">
+        <p>
+          --> The game is played in turns: two human players and one A.I.
+          Player.
+        </p>
+
+        <p>--> There are 3 rounds in total.</p>
+        <p>--> Name the country as the flag is displayed.</p>
+        <p>--> Scoring: Players earn 1 point for each correct answer.</p>
+
+        <p>
+          --> You must fill in all blanks to submit your answer or speak into
+          the mic.
+        </p>
+
+        <p>--> You can hover over the country's flag to reveal a hint.</p>
+
+        <p>
+          --> Player 1 and Player 2 must fill in all blanks before submitting
+          their answer.
+        </p>
+
+        <p>
+          --> The computer will try to guess the country's name based on its
+          stored answer.
+        </p>
+
+        <p>
+          --> At the end, you will see the final scores for Player 1, Player 2,
+          and the A.I. Player.
+        </p>
+      </div>
+      <div class="name-inputs">
+        <label for="player1">Player 1</label>
+        <input type="text" id="player1" placeholder="Enter name for Player 1" />
+        <label for="player2">Player 2</label>
+        <input type="text" id="player2" placeholder="Enter name for Player 2" />
+      </div>
+      <div>
+        <button type="submit" class="submit-button" onclick="submit()">
+          Submit and PLAY!
+        </button>
+      </div>
+      <div>
+        <button type="button" class="quit-button" onclick="quitit()">
+          Quit
+        </button>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="instruct-speak"
+          onclick="sendVoiceCommand(
+         'Welcome to the Ultimate Flag Challenge! Are you ready to test your knowledge and compete against a friend and a super-smart computer? Let’s get started! There are three rounds in total. In each round, a flag will appear on the screen. Your job is to name the country as fast as you can.There are three players in this game: Player One, that’s you. Player Two, your friend. And the A.I. Player, a computer that thinks it knows all the answers. You can answer in two ways: either type the name of the country or say it out loud into the microphone. If you’re stuck, don’t worry! You can hover over the flag to get a hint. For every correct answer, you earn one point. At the end of the game, we’ll add up the scores to see who wins. But here’s an important rule: Both players must enter their answers before submitting. The computer will guess too, so try your best to beat it. Once all three rounds are finished, the final scores will be revealed. Will you be the Ultimate Flag Champion? There’s only one way to find out!Alright, get ready The game is about to begin!')"
+        >
+          How To Play
+        </button>
+      </div>
+    </div>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="{% static 'logic.js' %}"></script>
+  </body>
+</html>
