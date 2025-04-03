@@ -122,32 +122,48 @@ Improve accessibility features for children with learning disabilities.
 ## Acknowledgments
 We would like to thank our colleagues for their feedback and contributions during the development of Mystery Nation.
 
-Mystery-Nation/
-│
-├── game2.py               # Main entry point, contains the game loop.
-├── requirements.txt       # List of Python dependencies required to run the game.
-├── README.md              # Documentation file (this one).
-│
-├── static/                # Directory for static files like CSS, images, and client-side assets.
-│   ├── audio/             # Audio files for game sounds.
-│   └── images/            # Image files like flags, icons, and other graphics.
-│
-├── templates/             # Directory for HTML templates (if using Django).
-│   ├── index.html         # Main template for displaying the game interface.
-│   └── result.html        # Template for displaying results after a round.
-│   ├── instructions.html  # Instructions page for the game.
-│   └── gamestart.html     # Start page of the game.
-│
-├── Mystery_Nation/         # Core game logic and Django setup.
-│   ├── __init__.py        # Game logic functions like generating clues and checking guesses.
-│   ├── admin.py           # Admin interface setup.
-│   ├── apps.py            # App configuration.
-│   ├── models.py          # Game models for storing data.
-│   ├── urls.py            # URL routing for Django views.
-│   ├── utils.py           # Utility functions like voice-to-word conversion.
-│   ├── views.py           # Methods for rendering HTML templates and handling actions.
-│
-└── manage.py              # Django project management script.
+Mystery-Nation/<br>
+│<br>
+├── game2.py               # Main entry point, contains the game loop.<br>
+<br>
+├── requirements.txt       # List of Python dependencies required to run the game.<br>
+<br>
+├── README.md              # Documentation file (this one).<br>
+<br>
+├── static/                # Directory for static files like CSS, images, and client-side assets.<br>
+<br>
+│   ├── audio/             # Audio files for game sounds.<br>
+<br>
+│   └── images/            # Image files like flags, icons, and other graphics.<br>
+<br>
+├── templates/             # Directory for HTML templates (if using Django).<br>
+<br>
+│   ├── index.html         # Main template for displaying the game interface.<br>
+<br>
+│   └── result.html        # Template for displaying results after a round.<br>
+<br>
+│   ├── instructions.html  # Instructions page for the game.<br>
+<br>
+│   └── gamestart.html     # Start page of the game.<br>
+<br>
+├── mysterynation/         # Core game logic and Django setup.<br>
+<br>
+│   ├── __init__.py        # Game logic functions like generating clues and checking guesses.<br>
+<br>
+│   ├── admin.py           # Admin interface setup.<br>
+<br>
+│   ├── apps.py            # App configuration.<br>
+<br>
+│   ├── models.py          # Game models for storing data.<br>
+<br>
+│   ├── urls.py            # URL routing for Django views.<br>
+<br>
+│   ├── utils.py           # Utility functions like voice-to-word conversion.<br>
+<br>
+│   ├── views.py           # Methods for rendering HTML templates and handling actions.<br>
+<br>
+└── manage.py              # Django project management script.<br>
+
 
 ## References
 Ekasari, M. F., et al. (2025). Effectiveness of health promotion utilizing word puzzle games. Healthcare in Low-Resource Settings.
