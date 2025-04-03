@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard - Mystery Nation</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+  <body id="leaderboardbody">
+    <!-- Navigation Section -->
+    <div class="navbar">
+      <button id="back_to_game-button" onclick="back()">Go Back</button>
+    </div>
+
+    <!-- Leaderboard Container -->
+    <div class="lcontainer">
+      <h1 id="ltitle">🏆 Leaderboard 🏆</h1>
+      <p class="subheading">Top 10 Players</p>
+
+      <div id="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Moves</th>
+              <th>Time Elapsed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for score in scores %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ score.name }}</td>
+              <td>{{ score.moves }}</td>
+              <td>{{ score.time_elapsed }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4">No scores recorded yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      function back() {
+        window.location.href = "/game2/";
+      }
+    </script>
+  </body>
+</html>

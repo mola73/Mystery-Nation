@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Fill Game</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="{% static 'logic.js' %}"></script>
+  </head>
+
+  <body>
+    <!-- Navigation Section -->
+    <div class="navbar">
+      <button id="leaderboard-button" onclick="goToLeaderboard()">
+        Leaderboard
+      </button>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+      <img
+        id="flag"
+        src="{% static 'countries/Japan.jpg' %}"
+        alt="Country Flag"
+      />
+
+      <!-- Audio Elements -->
+      <audio id="click" src="{% static 'audio/mousclick.mp3' %}"></audio>
+      <audio id="congrats" src="{% static 'audio/congrats.mp3' %}"></audio>
+      <audio id="bell" src="{% static 'audio/bell.mp3' %}"></audio>
+
+      <!-- Game Status -->
+      <div id="word-display" class="word-box"></div>
+      <p id="turn-info"></p>
+      <p id="message"></p>
+      <p id="score">Player 1: 0 | Player 2: 0 | Computer: 0</p>
+
+      <!-- Buttons -->
+      <button id="gsubmit-btn" onclick="submitAnswer()">Submit</button>
+      <button class="mic-button" id="micBtn" onclick="micUse()">🎤</button>
+
+      <!-- Control Buttons -->
+      <div class="button-container">
+        <button class="action-button" onclick="quitGame()">Quit</button>
+        <button class="action-button" onclick="goToInstructions()">
+          Instructions
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+      function playAudio(audioId) {
+        let audio = document.getElementById(audioId);
+        if (audio) {
+          audio.currentTime = 0;
+          audio
+            .play()
+            .catch((error) => console.log("Audio playback error:", error));
+        }
+      }
+
+      function submitAnswer() {
+        playAudio("click");
+        setTimeout(() => checkAnswer(), 1000);
+      }
+
+      function goToLeaderboard() {
+        window.location.href = "/leaderboard/";
+      }
+
+      function goToInstructions() {
+        playAudio("click");
+        setTimeout(() => (window.location.href = "/instructions/"), 1000);
+      }
+
+      function quitGame() {
+        playAudio("bell");
+        setTimeout(() => (window.location.href = "/start/"), 700);
+      }
+    </script>
+  </body>
+</html>
