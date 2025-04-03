@@ -72,7 +72,7 @@ const countryInfo = {
       "Longest coastline in the world, stretching over 202,080 kilometres and 4th largest country in the world. Maybe you are in this country right now.",
   },
   Guatemala: {
-    continent: "Continent - North America",
+    continent: "Continent - South America",
     funFact: "The first chocolate bar was made by the ancient Mayans.",
   },
   Switzerland: {
@@ -150,6 +150,8 @@ function startRound() {
   ).innerText = `${player1Name}: ${scores[0]} | ${player2Name}: ${scores[1]} | Computer: ${scores[2]}`;
 
   if (currentRound >= maxRounds) {
+    submitScore(player1Name, scores[0]);
+    submitScore(playerName2, scores[1]);
     //this should end the game
     document.getElementById("turn-info").innerText = "Game Over! Final Scores.";
     onWin(); //this should play a congrats sound
@@ -157,39 +159,44 @@ function startRound() {
     return;
   }
   document.getElementById("message").innerText = "";
+
   displayWord();
-  console.log("word dispalyed");
+  //console.log("word dispalyed");
 }
 
 function displayWord() {
   currentWord = words[currentRound].split("");
+  console.log(currentWord);
   let wordDisplay = document.getElementById("word-display");
   wordDisplay.innerHTML = "";
-
+  let firstInput = null;
   currentWord.forEach((char, i) => {
-    if (char === " ") {
-      wordDisplay.appendChild(document.createTextNode(" ")); // Keep spaces normal
-      return;
-    }
-
     let span = document.createElement("span");
-    span.classList.add("letter-box"); // Ensures all letters are boxed
+    span.classList.add("letter-box");
 
-    if (char === "_") {
+    if (char === " ") {
+      span.innerHTML = "&nbsp;";
+      span.style.margin = "0 10px";
+    } else if (char === "_") {
       let input = document.createElement("input");
       input.type = "text";
       input.maxLength = 1;
       input.dataset.index = i;
       input.addEventListener("input", handleInput);
       span.appendChild(input);
+
+      if (!firstInput) {
+        firstInput = input; // Store the first blank input
+      }
     } else {
-      span.innerText = char.toUpperCase(); // Ensures uppercase letters in boxes
-      span.classList.add("bold-black"); // Makes pre-filled letters bold and black
+      span.innerText = char.toUpperCase();
+      span.classList.add("bold-black");
     }
 
     wordDisplay.appendChild(span);
   });
-  console.log(answers[currentRound]); //debug check
+  console.log("Current Round:", currentRound);
+  console.log("Loading Flag for:", answers[currentRound]);
   loadFlag(answers[currentRound]);
 
   const turnText =
@@ -200,84 +207,121 @@ function displayWord() {
       : "Computer";
   document.getElementById("turn-info").innerText = `Turn: ${turnText}`;
 
-  if (currentRound % 3 !== 2) {
-    document.querySelector("input")?.focus();
-  } else {
+  if (firstInput) {
+    setTimeout(() => firstInput.focus(), 300); // Ensure focus on the first blank
+  }
+
+  if (currentRound % 3 === 2) {
     setTimeout(computerMove, 2000);
   }
 }
 
 function handleInput(event) {
   let input = event.target;
-  input.value = input.value.toUpperCase().replace(/[^A-Z]/g, ""); // Only allows letters
+  input.value = input.value.toUpperCase().replace(/[^A-Z]/g, ""); // Allow only letters
 
   if (input.value.length === 1) {
-    let nextBox = input.parentElement.nextElementSibling; // Start with the next sibling
-
-    // Loop until we find the next blank input (skip spaces)
+    let nextBox = input.parentElement.nextElementSibling;
     while (nextBox && !nextBox.querySelector("input")) {
       nextBox = nextBox.nextElementSibling;
     }
-
-    if (nextBox && nextBox.querySelector("input")) {
-      nextBox.querySelector("input").focus(); // Move cursor to the next blank
+    if (nextBox) {
+      nextBox.querySelector("input").focus(); // Move to the next blank
     }
   }
 }
 
+// function checkAnswer() {
+//   // Add glow effect
+//   const submitButton = document.getElementById("submit-btn");
+//   submitButton.classList.add("glow");
+
+//   // Your existing code for checking the answer
+//   let inputs = document.querySelectorAll("input");
+//   let userAnswer = words[currentRound];
+//   let inputValues = Array.from(inputs).map((input) =>
+//     input.value.toUpperCase()
+//   );
+//   let filledAnswer = "";
+//   let inputIndex = 0;
+
+//   // Check for empty inputs
+//   if (inputValues.includes("")) {
+//     document.getElementById("message").innerText =
+//       "Please fill in all blanks to move forward.";
+//     return; // Exit the function if there are empty inputs
+//   }
+
+//   // Construct the filled answer
+//   for (let char of userAnswer) {
+//     if (char === "_") {
+//       filledAnswer += inputValues[inputIndex] || "_";
+//       inputIndex++;
+//     } else {
+//       filledAnswer += char;
+//     }
+//   }
+
+//   // Check if the filled answer matches the correct answer
+//   if (filledAnswer.toUpperCase() === answers[currentRound].toUpperCase()) {
+//     scores[currentRound % 3]++;
+//     document.getElementById("message").innerText = "Correct!";
+//     sendVoiceCommand("Wooohoooo, Nice One, that was correct");
+//   } else {
+//     document.getElementById(
+//       "message"
+//     ).innerText = `Wrong country, but the country is ${answers[currentRound]}`;
+//     sendVoiceCommand("Oops, that is wrong, try again");
+//   }
+//   updateScore();
+//   setTimeout(nextRound, 2000);
+//   let imageFormats = ["jpg", "jpeg", "png", "webp"];
+//   // Remove glow effect after a short delay
+//   setTimeout(() => {
+//     submitButton.classList.remove("glow");
+//   }, 300); // Adjust the duration as needed
+// }
+
 function checkAnswer() {
-  // Add glow effect
   const submitButton = document.getElementById("submit-btn");
   submitButton.classList.add("glow");
 
-  // Your existing code for checking the answer
   let inputs = document.querySelectorAll("input");
-  let userAnswer = words[currentRound];
   let inputValues = Array.from(inputs).map((input) =>
     input.value.toUpperCase()
   );
+  if (inputValues.includes("")) {
+    document.getElementById("message").innerText = "Please fill in all blanks.";
+    return;
+  }
+
+  let userAnswer = words[currentRound];
   let filledAnswer = "";
   let inputIndex = 0;
 
-  // Check for empty inputs
-  if (inputValues.includes("")) {
-    document.getElementById("message").innerText =
-      "Please fill in all blanks to move forward.";
-    return; // Exit the function if there are empty inputs
-  }
-
-  // Construct the filled answer
   for (let char of userAnswer) {
-    if (char === "_") {
-      filledAnswer += inputValues[inputIndex] || "_";
-      inputIndex++;
-    } else {
-      filledAnswer += char;
-    }
+    filledAnswer += char === "_" ? inputValues[inputIndex++] || "_" : char;
   }
 
-  // Check if the filled answer matches the correct answer
   if (filledAnswer.toUpperCase() === answers[currentRound].toUpperCase()) {
     scores[currentRound % 3]++;
     document.getElementById("message").innerText = "Correct!";
-    sendVoiceCommand("Wooohoooo, Nice One, that was correct");
+    playCountrySound(answers[currentRound]);
+    sendVoiceCommand("Yaay, Nice One, that was correct");
   } else {
     document.getElementById(
       "message"
-    ).innerText = `Wrong country, but the country is ${answers[currentRound]}`;
+    ).innerText = `Wrong country, it was ${answers[currentRound]}`;
     sendVoiceCommand("Oops, that is wrong, try again");
   }
+
   updateScore();
   setTimeout(nextRound, 2000);
-  let imageFormats = ["jpg", "jpeg", "png", "webp"];
-  // Remove glow effect after a short delay
-  setTimeout(() => {
-    submitButton.classList.remove("glow");
-  }, 300); // Adjust the duration as needed
+  setTimeout(() => submitButton.classList.remove("glow"), 300);
 }
 
 function computerMove() {
-  const correctAnswer = answers[currentRound].toUpperCase().split("");
+  let correctAnswer = answers[currentRound].toUpperCase().split("");
   let wordDisplay = document.getElementById("word-display");
 
   wordDisplay.innerHTML = ""; // Clear previous display
@@ -295,12 +339,13 @@ function computerMove() {
   ).innerText = `Computer guessed: ${answers[currentRound]}`;
   scores[2]++;
   updateScore();
+  playCountrySound(answers[currentRound]);
   setTimeout(nextRound, 3500);
 }
 
 function updateScore() {
-  const player1Name = localStorage.getItem("player1") || "Player 1";
-  const player2Name = localStorage.getItem("player2") || "Player 2";
+  // const player1Name = localStorage.getItem("player1") || "Player 1";
+  // const player2Name = localStorage.getItem("player2") || "Player 2";
   document.getElementById(
     "score"
   ).innerText = `${player1Name}: ${scores[0]} | ${player2Name}: ${scores[1]} | Computer: ${scores[2]}`;
@@ -312,57 +357,31 @@ function nextRound() {
 }
 function loadFlag(country) {
   let flagElement = document.getElementById("flag");
+  let imgPath = `/static/countries/${country}.jpg`; // Construct path
 
-  let imgPath = `/static/countries/${country}.jpg`; // Use absolute static URL
+  flagElement.src = imgPath;
+  if (!flagElement) {
+    console.error("Flag element not found!");
+    return;
+  }
 
-  let img = new Image();
-  img.src = imgPath;
+  // let imgPath = `/static/countries/${country}.jpg`; // Construct path
 
-  img.onload = function () {
-    flagElement.src = imgPath;
-    console.log(`Loaded flag: ${imgPath}`);
-  };
-
-  img.onerror = function () {
-    console.log(`Failed to load: ${imgPath}, using default flag.`);
-    flagElement.src = "/static/countries/Japan.jpg"; // Default fallback
-  };
+  fetch(imgPath, { method: "HEAD" }) // Check if image exists
+    .then((response) => {
+      if (response.ok) {
+        flagElement.src = imgPath;
+        console.log(`Loaded flag: ${imgPath}`);
+      } else {
+        throw new Error("Image not found");
+      }
+    })
+    .catch(() => {
+      console.warn(`Failed to load: ${imgPath}, using default flag.`);
+      flagElement.src = "/static/countries/default.jpg"; // Better fallback
+    });
 }
 
-// function loadFlag(country) {
-//   let imageFormats = ["jpg", "jpeg", "png", "webp"];
-//   let folderPath =
-//     "C:/Users/muham/OneDrive/Desktop/UNBC work/2025 Winter Semester/(499)Social Robotics/Mystery_Nation/game2/static/countries/";
-//   let flagElement = document.getElementById("flag");
-//   let foundImage = false;
-
-//   for (let format of imageFormats) {
-//     let imgPath = `${folderPath}${country}.${format}`;
-//     let img = new Image();
-//     img.src = imgPath;
-
-//     img.onload = function () {
-//       if (!foundImage) {
-//         flagElement.src = imgPath;
-//         foundImage = true;
-//       }
-//     };
-
-//     img.onerror = function () {
-//       console.log(`Failed to load: ${imgPath}`);
-//     };
-//   }
-
-//   setTimeout(() => {
-//     if (!foundImage) {
-//       flagElement.src = "static/countries/Japan.jpg";
-//       console.log("Default flag (Japan) displayed due to missing flag.");
-//     }
-//   }, 2000);
-// }
-
-//
-//
 function micUse() {
   console.log("mic button has been pressed");
   if (
@@ -392,28 +411,28 @@ function micUse() {
 }
 
 // this controls the pooping out of the funfacts
-document.getElementById("flag").addEventListener("mouseover", function () {
-  console.log("The mouse is over the flag, fun facts should display");
+// document.getElementById("flag").addEventListener("mouseover", function () {
+//   console.log("The mouse is over the flag, fun facts should display");
 
-  const country = answers[currentRound]; // Get current country
-  const infoBox = document.getElementById("country-info");
+//   const country = answers[currentRound]; // Get current country
+//   const infoBox = document.getElementById("country-info");
 
-  if (countryInfo[country]) {
-    infoBox.innerHTML = `<strong>${countryInfo[country].continent}</strong><br>${countryInfo[country].funFact}`;
-    infoBox.style.display = "block";
+//   if (countryInfo[country]) {
+//     infoBox.innerHTML = `<strong>${countryInfo[country].continent}</strong><br>${countryInfo[country].funFact}`;
+//     infoBox.style.display = "block";
 
-    // Position the info box near the flag
-    infoBox.style.position = "absolute";
-    infoBox.style.top = `${this.offsetTop + this.height}px`; // Adjust position below flag
-    infoBox.style.left = `${this.offsetLeft}px`;
-  } else {
-    console.log(`No info available for: ${country}`);
-  }
-});
+//     // Position the info box near the flag
+//     infoBox.style.position = "absolute";
+//     infoBox.style.top = `${this.offsetTop + this.height}px`; // Adjust position below flag
+//     infoBox.style.left = `${this.offsetLeft}px`;
+//   } else {
+//     console.log(`No info available for: ${country}`);
+//   }
+// });
 
-document.getElementById("flag").addEventListener("mouseout", function () {
-  document.getElementById("country-info").style.display = "none";
-});
+// document.getElementById("flag").addEventListener("mouseout", function () {
+//   document.getElementById("country-info").style.display = "none";
+// });
 
 // document.getElementById("flag").addEventListener("mouseover", function () {
 //   console.log("The mouse is over the flg and fun facts should display");
@@ -432,6 +451,25 @@ document.getElementById("flag").addEventListener("mouseout", function () {
 //   document.getElementById("country-info").style.display = "none";
 // });
 //this is where the funfct portion stops
+const country = answers[currentRound];
+function appearf() {
+  const country = answers[currentRound];
+  const infoBox = document.getElementById("country-info");
+  infoBox.innerHTML = `<strong>${countryInfo[country].continent}</strong><br>${countryInfo[country].funFact}`;
+  infoBox.style.display = "block";
+}
+
+function disappearf() {
+  document.getElementById("country-info").style.display = "none";
+}
+
+function playCountrySound(country) {
+  let speech = new SpeechSynthesisUtterance(country);
+  speech.lang = "en-US";
+  speech.rate = 1;
+  speech.pitch = 1;
+  window.speechSynthesis.speak(speech);
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("submitBtn").addEventListener("click", handleSubmit);
@@ -459,6 +497,7 @@ function playAudio(audio) {
     audio.play().catch((error) => console.log("Audio playback error:", error));
   }
 }
+//const winSound = new Audio("static/audio/congrats.mp3");
 
 function onWin() {
   playAudio(document.getElementById("congrats"));
@@ -488,4 +527,42 @@ function sendVoiceCommand(text) {
     });
 }
 
-startRound();
+function submitScore(name, score) {
+  fetch("/submit_score/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"), // Ensure CSRF protection
+    },
+    body: JSON.stringify({ name, score }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        onWin(); // play coongrats when game ends
+        setTimeout(() => {
+          window.location.href = "/leaderboard/"; // Change this to the name of your new HTML file
+        }, 10000); // Wait 1000ms before redirecting
+
+        console.log("score submitted");
+      }
+    });
+}
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  startRound();
+});

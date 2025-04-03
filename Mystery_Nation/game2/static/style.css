@@ -2,7 +2,6 @@
   background-image: url("countries/kids.jpg"); /* Ensure the correct path */
   border: 2px solid black;
   background-size: cover; /*Ensures the full image is displayed*/
-  /*overflow: hidden; /*this will enable scrolling*/
   background-repeat: no-repeat; /* Prevents tiling */
   background-position: center; /* Centers the image */
   height: 100%;
@@ -15,6 +14,7 @@
   align-items: center;
   padding-bottom: 60px; /* Adds some spacing from the bottom*/
 }
+
 /* Ensure the body takes full height and centers content */
 #leaderboardbody {
   display: flex;
@@ -114,23 +114,27 @@ body {
   text-align: center;
   background: url("countries/optional.jpg") no-repeat center center fixed; /* Ensure the path is correct */
   background-size: cover; /* This ensures the image covers the entire background */
-  /* width: 100%; */
   height: 100vh;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  /* color: white; */
   font-size: 24px;
 }
 
 .game-container {
-  margin-top: 50px;
+  margin-top: 50px; /* Adjusts the margin to move down slightly */
   padding: 30px;
   background: rgba(0, 0, 0, 0.7);
   display: inline-block;
   border-radius: 10px;
+
+  /* Center the container both vertically and horizontally */
+  position: absolute; /* Position relative to the viewport */
+  top: 50%; /* 50% from the top */
+  left: 50%; /* 50% from the left */
+  transform: translate(-50%, -50%); /* Offset by half of its width and height */
 }
 
 .button-container {
@@ -172,6 +176,7 @@ body {
   font-size: 36px;
   margin: 20px;
 }
+
 input {
   width: 50px;
   height: 50px;
@@ -181,12 +186,14 @@ input {
   border: 2px solid white;
   background: rgba(255, 255, 255, 0.8);
 }
+
 #message {
   color: yellow;
   font-weight: bold;
   font-size: 32px;
   margin-top: 15px;
 }
+
 button {
   margin-top: 20px;
   padding: 15px 30px;
@@ -207,8 +214,10 @@ button {
   cursor: pointer;
   position: relative;
 }
+
 #turn-info,
 #score {
+  color: white;
   font-size: 28px;
   font-weight: bold;
   margin-top: 20px;
@@ -259,6 +268,7 @@ button {
   cursor: pointer;
   margin-top: 10px;
 }
+
 #instruct_whole {
   margin: 0;
   padding: 0;
@@ -285,21 +295,26 @@ button {
 }
 
 .instruction {
-  background-color: white;
   color: black;
   padding: 20px;
   border-radius: 5px;
   margin-bottom: 20px;
 }
+
 #instruction-button {
-  background-color: #007bff;
+  background-color: blue;
+  font-size: 25px;
+  font-weight: bold;
   color: white;
+  width: 340px;
+  height: 110px;
   border: none;
   padding: 10px 20px;
   font-size: 18px;
   cursor: pointer;
   border-radius: 5px;
 }
+
 #leaderboard-button {
   font-size: 15px;
   font-weight: bold;
@@ -317,19 +332,28 @@ button {
   display: none; /* Hide instructions initially */
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 15px;
-  margin-top: 10px;
-  border-radius: 5px;
+  font-size: 20px;
+  padding: 20px;
+  margin-top: 15px;
+  border-radius: 10px;
   width: 90%;
   max-width: 600px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0; /* Make it invisible by default */
+  transform: translateY(10px); /* Slightly offset the instruction box */
 }
 
 #instruction-button:hover + #instruction-content {
   display: block; /* Show instructions when hovering over the button */
+  opacity: 1; /* Fade in the instructions */
+  transform: translateY(0); /* Bring it back to its original position */
 }
 
 #instruction-content:hover {
   display: block; /* Keep showing if hovered */
+  opacity: 1; /* Ensure visibility on hover */
+  transform: translateY(0); /* Keep it in its final position */
 }
 
 .info {
@@ -373,10 +397,11 @@ button {
   background-color: green;
   color: black;
 }
+
 .submit-button,
 .quit-button {
-  height: 100px;
-  width: 300px;
+  height: 80px;
+  width: 250px;
   padding: 10px 20px;
   font-size: 30px; /* Increased font size */
   border: none;
@@ -387,7 +412,19 @@ button {
   transition: background-color 0.3s;
   margin: 10px 0;
 }
-
+.instruct-speak {
+  height: 80px;
+  width: 250px;
+  padding: 10px 20px;
+  font-size: 30px; /* Increased font size */
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50; /* Green */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 10px 0;
+}
 .submit-button:hover,
 .quit-button:hover {
   background-color: greenyellow;

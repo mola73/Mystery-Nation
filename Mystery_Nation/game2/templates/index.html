@@ -21,7 +21,9 @@
     <div class="game-container">
       <img
         id="flag"
-        src="{% static 'countries/Japan.jpg' %}"
+        onmouseover="appearf()"
+        onmouseout="disappearf()"
+        src=""
         alt="Country Flag"
       />
 
@@ -37,8 +39,10 @@
       <p id="score">Player 1: 0 | Player 2: 0 | Computer: 0</p>
 
       <!-- Buttons -->
-      <button id="gsubmit-btn" onclick="submitAnswer()">Submit</button>
+      <button id="submit-btn" onclick="submitAnswer()">Submit</button>
       <button class="mic-button" id="micBtn" onclick="micUse()">🎤</button>
+
+      <div id="country-info"></div>
 
       <!-- Control Buttons -->
       <div class="button-container">
@@ -60,6 +64,9 @@
             .catch((error) => console.log("Audio playback error:", error));
         }
       }
+      function onWin() {
+        playAudio("congrats");
+      }
 
       function submitAnswer() {
         playAudio("click");
@@ -78,6 +85,9 @@
       function quitGame() {
         playAudio("bell");
         setTimeout(() => (window.location.href = "/start/"), 700);
+      }
+      if (currentRound >= maxRounds) {
+        onWin();
       }
     </script>
   </body>

@@ -24,10 +24,13 @@ def instructions(request):
     template=loader.get_template('instructions.html')
     return HttpResponse(template.render())
 
+from django.shortcuts import render
+from .models import PlayerScore
+
 def leaderboard(request):
-    # Top 10 scores, ordered by score (descending)
-    scores = PlayerScore.objects.order_by('-score')[:10]
-    return render(request, "leaderboard.html", {"scores": scores})
+    scores = PlayerScore.objects.order_by('-score')[:10]  # Top 10 highest scores
+    return render(request, 'leaderboard.html', {'scores': scores})
+
 
 
 @csrf_exempt
@@ -59,3 +62,18 @@ def do_voices(request):
     
     # Return error for any other method (e.g., GET)
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+import json
+from django.http import JsonResponse
+from .models import PlayerScore
+
+def submit_score(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        PlayerScore.objects.create(
+            name=data['name'],
+            score=data['score']
+        )
+       
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False}, status=400)
