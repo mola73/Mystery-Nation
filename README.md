@@ -161,6 +161,7 @@ Mystery-Nation/<br>
 │   ├── utils.py           # Utility functions like voice-to-word conversion.<br>
 <br>
 │   ├── views.py           # Methods for rendering HTML templates and handling actions.<br>
+│   ├── requirements.txt   # List of dependencies required to run the project.<br>
 <br>
 └── manage.py              # Django project management script.<br>
 
